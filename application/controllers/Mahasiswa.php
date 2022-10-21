@@ -5,13 +5,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require APPPATH."libraries/Server.php";
 class Mahasiswa extends Server {
 
+	// buat construct
+	public function __construct()
+        {
+			parent::__construct();
+                // panggil model "Mmahasiswa"
+				$this->load->model("Mmahasiswa","mdl",TRUE);
+        }
+
 	// buat fungsi "GET"
 	function service_get()
 	{
-		
-		// panggil model "Mmahasiswa"
-		$this->load->model("Mmahasiswa","mdl",TRUE);
-
 		// panggil fungsi "get_data"
 		$hasil = $this->mdl->get_data();
 
@@ -22,9 +26,7 @@ class Mahasiswa extends Server {
 
 	function service_post()
 	{
-		// panggil model "Mmahasiswa"
-		$this->load->model("Mmahasiswa","mdl",TRUE);
-
+		
 		// ambil parameter data
 		$data = array (
 			"npm" => $this->post("npm"),
@@ -59,14 +61,34 @@ class Mahasiswa extends Server {
 	function service_put()
 	{
 		
+		// ambil parameter data
+		$data = array (
+			"npm" => $this->put("npm"),
+			"nama" => $this->put("nama"),
+			"telepon" => $this->put("telepon"),
+			"jurusan" => $this->put("jurusan"),
+			"token" => base64_encode($this->put("token")),
+		);
+
+		// panggil fungsi "update_data"
+		$hasil = $this->mdl->update_data($data["npm"], $data["nama"], $data["telepon"], $data["jurusan"], $data["token"]);
+
+		// jika proses update berhasil
+		if ($hasil == 0)
+		{
+			$this->response(array("status" => "Data Mahasiswa Berhasil Diupdate . . ."),200);
+		}
+		
+		// jika proses update gagal
+		else
+		{
+			$this->response(array("status" => "Data Mahasiswa Gagal Diupdate !"),200);
+		}
 	}
 
 	function service_delete()
 	{
 		
-		// panggil model "Mmahasiswa"
-		$this->load->model("Mmahasiswa","mdl",TRUE);
-
 		// ambil parameter token "(npm)"
 		$token = $this->delete("npm");
 

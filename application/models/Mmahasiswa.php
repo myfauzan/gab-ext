@@ -81,6 +81,41 @@ class Mmahasiswa extends CI_Model {
 		return $hasil;
 	}
 
+	function update_data($npm,$nama,$telepon,$jurusan,$token)
+	{
+		// cek apakah npm tersedia/tidak
+		$this->db->select("npm");
+		$this->db->from("tb_mahasiswa");
+		$this->db->where("TO_BASE64(npm) != '$token' AND npm = '$npm'");
 
+		$query = $this->db->get()->result();
+
+		//jika npm ditemukan
+		if(count($query) == 0)
+		{
+			//isi nilai untuk disimpan
+			$data = array (
+				"npm" => $npm,
+				"nama" => $nama,
+				"telepon" => $telepon,
+				"jurusan" => $jurusan,
+			);
+
+			// pilih data yang di ubah
+			$this->db->where("TO_BASE64(npm) = '$token'");
+			// update data
+			$this->db->update("tb_mahasiswa", $data);
+
+			$hasil = 0;
+		}
+
+		else
+		{
+			$hasil = 1;
+		}
+		
+		//kirim nilai $hasil ke "controller" Mahasiswa
+		return $hasil;
+	}
 	
 }
