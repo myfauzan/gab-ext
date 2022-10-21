@@ -46,7 +46,7 @@ class Mahasiswa extends Server {
 		// jika proses post berhasil
 		if ($hasil == 0)
 		{
-			$this->response(array("status" => "Data Mahasiswa Berhasil Disimpan"),200);
+			$this->response(array("status" => "Data Mahasiswa Berhasil Disimpan . . ."),200);
 		}
 		
 		// jika proses post gagal
